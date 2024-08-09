@@ -13,9 +13,7 @@
 To install the latest development version from GitHub, use:
 
 ```bash
-git clone https://github.com/andrianllmm/tglstemmer.git
-cd tglstemmer
-pip install .
+pip install git+https://github.com/andrianllmm/tagalog-stemmer.git@main
 ```
 
 
