@@ -9,7 +9,7 @@ from tglstemmer import stemmer
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
-valid_words = get_words()
+valid_words = set(get_words())
 
 
 def test_stemmer_accuracy():
