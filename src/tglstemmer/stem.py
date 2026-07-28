@@ -1,8 +1,4 @@
-"""This module provides a class to store Tagalog stems.
-"""
-
-
-from typing import Optional
+"""This module provides a class to store Tagalog stems."""
 
 
 class Stem(str):
@@ -27,16 +23,16 @@ class Stem(str):
     def __init__(
         self,
         stem,
-        pre: Optional[str] = None,
-        inf: Optional[str] = None,
-        suf: Optional[str] = None,
-        rep: Optional[str] = None,
-        dup: Optional[str] = None,
-        contraction: Optional[str] = None,
-        phoneme_change: Optional[str] = None,
-        assimilation: Optional[str] = None,
-        vowel_loss: Optional[str] = None,
-        metathesis: Optional[str] = None,
+        pre: str | None = None,
+        inf: str | None = None,
+        suf: str | None = None,
+        rep: str | None = None,
+        dup: str | None = None,
+        contraction: str | None = None,
+        phoneme_change: str | None = None,
+        assimilation: str | None = None,
+        vowel_loss: str | None = None,
+        metathesis: str | None = None,
     ):
         # Initialize additional attributes
         self.pre = pre
@@ -51,25 +47,15 @@ class Stem(str):
         self.metathesis = metathesis
 
     def count_affixes(self):
-        """Counts the length of affixes.
-        """
-        return (
-            len(self.pre or "")
-            + len(self.inf or "")
-            + len(self.suf or "")
-        )
+        """Counts the length of affixes."""
+        return len(self.pre or "") + len(self.inf or "") + len(self.suf or "")
 
     def count_reduplication(self):
-        """Counts the length of reduplication (repetition and duplication).
-        """
-        return (
-            len(self.rep or "")
-            + len(self.dup or "")
-        )
+        """Counts the length of reduplication (repetition and duplication)."""
+        return len(self.rep or "") + len(self.dup or "")
 
     def count_transformations(self):
-        """Counts the number of transformations.
-        """
+        """Counts the number of transformations."""
         return (
             int(bool(self.phoneme_change))
             + int(bool(self.assimilation))
