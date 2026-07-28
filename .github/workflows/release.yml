@@ -7,10 +7,12 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: pypi
 
     steps:
       - uses: actions/checkout@v4
@@ -36,3 +38,14 @@ jobs:
           git add CHANGELOG.md
           git diff --staged --quiet || git commit -m "chore: update changelog for ${GITHUB_REF_NAME}"
           git push origin HEAD:main
+
+      - name: Build
+        run: |
+          rm -rf dist
+          uv build
+
+      - name: Check package
+        run: uv run --with twine twine check dist/*
+
+      - name: Publish
+        run: uv publish
