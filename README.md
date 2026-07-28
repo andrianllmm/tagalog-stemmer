@@ -87,6 +87,24 @@ stem-inflection pairs.
 | Understemming Total | 184    |
 | Overstemming Total  | 33     |
 
+## Development
+
+This project uses [uv](https://docs.astral.sh/uv/) for dependency management.
+
+Clone the repo and sync dependencies (including dev and test groups):
+
+```sh
+git clone https://github.com/andrianllmm/tagalog-stemmer.git
+cd tagalog-stemmer
+uv sync --all-groups
+```
+
+Run the tests:
+
+```sh
+uv run pytest
+```
+
 ## Contributing
 
 Contributions are welcome! To get started:
