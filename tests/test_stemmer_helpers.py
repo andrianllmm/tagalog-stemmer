@@ -1,10 +1,7 @@
-from tglstemmer.helpers.words import get_words
-from tglstemmer.helpers.validation import is_valid, is_acceptable
 from tglstemmer.helpers.manipulation import replace_letter, swap_letters
-
-from tglstemmer import stemmer
+from tglstemmer.helpers.validation import is_acceptable, is_valid
+from tglstemmer.helpers.words import get_words
 from tglstemmer.stem import Stem
-
 
 valid_words = get_words()
 

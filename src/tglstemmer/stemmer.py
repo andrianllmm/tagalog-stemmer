@@ -1,21 +1,17 @@
-"""This module provides functions to perform Tagalog stemming on word/s.
-"""
-
+"""This module provides functions to perform Tagalog stemming on word/s."""
 
 import os
-from tabulate import tabulate
-from typing import Optional
-from nltk import word_tokenize
 from string import punctuation as PUNCS
 
+from nltk import word_tokenize
+from tabulate import tabulate
+
+from .helpers.affixes import INFIXES, PREFIXES, SUFFIXES
 from .helpers.alphabet import VOWELS
-from .helpers.validation import is_valid, is_acceptable, is_vowel, is_consonant
 from .helpers.manipulation import replace_letter, swap_letters
+from .helpers.validation import is_acceptable, is_consonant, is_valid, is_vowel
 from .helpers.words import get_words
-from .helpers.affixes import PREFIXES, INFIXES, SUFFIXES
-
 from .stem import Stem
-
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -24,7 +20,9 @@ valid_words = get_words()
 valid_words.extend(["split"])
 
 
-def get_stems(text: str, valid_words: Optional[list[str]] = valid_words, exclude_punc: bool=True) -> list[str]:
+def get_stems(
+    text: str, valid_words: list[str] | None = valid_words, exclude_punc: bool = True
+) -> list[str]:
     """Get the stem of each word in a text.
 
     Args:
@@ -46,7 +44,7 @@ def get_stems(text: str, valid_words: Optional[list[str]] = valid_words, exclude
     return [get_stem(token, valid_words) for token in tokens]
 
 
-def get_stem(token: str, valid_words: Optional[list[str]] = valid_words) -> Stem:
+def get_stem(token: str, valid_words: list[str] | None = valid_words) -> Stem:
     """Get the stem of a word.
 
     Args:
@@ -80,7 +78,9 @@ def get_stem(token: str, valid_words: Optional[list[str]] = valid_words) -> Stem
         return sort_candidates(candidates)[0]
 
 
-def get_stem_candidates(token: str, valid_words: Optional[list[str]] = valid_words) -> list[Stem]:
+def get_stem_candidates(
+    token: str, valid_words: list[str] | None = valid_words
+) -> list[Stem]:
     """Get the possible stems of a word.
 
     Args:
@@ -128,11 +128,15 @@ def sort_candidates(candidates: list[Stem]) -> list[Stem]:
     Returns:
         list[Stem]: Ordered list of the stem candidates.
     """
-    return sorted(candidates, key=lambda c: c.count_affixes() + c.count_reduplication(), reverse=True)
+    return sorted(
+        candidates,
+        key=lambda c: c.count_affixes() + c.count_reduplication(),
+        reverse=True,
+    )
 
 
 def apply_stemming(
-    functions: tuple, tokens: set[Stem], valid_words: Optional[list[str]] = valid_words
+    functions: tuple, tokens: set[Stem], valid_words: list[str] | None = valid_words
 ) -> set[Stem]:
     """Apply all stemming functions to a list of tokens.
 
@@ -307,7 +311,9 @@ def stem_inf(tokens: set[Stem]) -> set[Stem]:
     return stems
 
 
-def stem_suf(tokens: set[Stem], valid_words: Optional[list[str]] = valid_words) -> set[Stem]:
+def stem_suf(
+    tokens: set[Stem], valid_words: list[str] | None = valid_words
+) -> set[Stem]:
     """Stems tokens with suffixes.
 
     Args:
@@ -381,16 +387,14 @@ def stem_suf(tokens: set[Stem], valid_words: Optional[list[str]] = valid_words) 
                     if is_valid(stem_mtts, valid_words):
                         stems.add(stem_mtts)
 
-                    elif stems_vwls_mtts := stem_vowel_loss(
-                        {stem_mtts}, valid_words
-                    ):
+                    elif stems_vwls_mtts := stem_vowel_loss({stem_mtts}, valid_words):
                         stems.update(stems_vwls_mtts)
 
     return stems
 
 
 def stem_vowel_loss(
-    tokens: set[Stem], valid_words: Optional[list[str]] = valid_words
+    tokens: set[Stem], valid_words: list[str] | None = valid_words
 ) -> set[Stem]:
     """Stems tokens with vowel loss.
 
@@ -453,12 +457,7 @@ def stem_rep(tokens: set[Stem]) -> set[Stem]:
                 and token[1] == token[4]
                 and is_consonant(token[0])
                 and is_vowel(token[1])
-            ):
-                stem = token[2:]
-                stem.rep = str(token[:2])
-
-            # Repeats all consonants (CC-CCV) (e.g. chcheck => check)
-            elif (
+            ) or (
                 token[0:2] == token[2:4]
                 and is_consonant(token[0:2])
                 and is_vowel(token[4])
@@ -483,12 +482,7 @@ def stem_rep(tokens: set[Stem]) -> set[Stem]:
                 and token[1] == token[5]
                 and is_consonant(token[0])
                 and is_vowel(token[1])
-            ):
-                stem = token[2:]
-                stem.rep = str(token[:2])
-
-            # Repeats first two consonants (CC-CCCV) (e.g. spsplit => split)
-            elif (
+            ) or (
                 token[0:2] == token[2:4]
                 and is_consonant(token[0:2])
                 and is_vowel(token[5])
@@ -502,12 +496,7 @@ def stem_rep(tokens: set[Stem]) -> set[Stem]:
                 and token[2] == token[6]
                 and is_consonant(token[0:2])
                 and is_vowel(token[6])
-            ):
-                stem = token[3:]
-                stem.rep = str(token[:3])
-
-            # Repeats all consonants (CCC-CCCV) (e.g. splsplit => split)
-            elif (
+            ) or (
                 token[0:3] == token[3:6]
                 and is_consonant(token[0:3])
                 and is_vowel(token[6])
@@ -542,17 +531,14 @@ def stem_dup(tokens: set[Stem]) -> set[Stem]:
     stems = set()
 
     for token in tokens:
-
         if (
             "-" in token
             and "-" not in (token[0], token[-1])
             and len(token.split("-")) == 2
         ):
-
             first, second = token.split("-")
 
             if len(first) > 1 and len(second) > 1:
-
                 # Exact match (e.g. ano-ano => ano)
                 if first == second:
                     stem = first
@@ -582,7 +568,6 @@ def stem_dup(tokens: set[Stem]) -> set[Stem]:
 
                 # 2-character contractions
                 elif len(first) > 3 and first[-2:] in ("ng", "'t"):
-
                     # Exact match after contraction removal (e.g. iba't-iba => iba)
                     if first[:-2] == second:
                         stem = second
@@ -620,7 +605,6 @@ def stem_dup(tokens: set[Stem]) -> set[Stem]:
 
                 # 1-character contractions
                 elif len(first) > 2 and first[-1] in ("t"):
-
                     # Exact match after contraction removal (e.g. ibat-iba => iba)
                     if first[:-1] == second:
                         stem = second

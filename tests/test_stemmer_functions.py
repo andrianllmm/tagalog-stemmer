@@ -1,7 +1,5 @@
-from tglstemmer.helpers.words import get_words
-
 from tglstemmer import stemmer
-
+from tglstemmer.helpers.words import get_words
 
 valid_words = get_words()
 
@@ -21,10 +19,12 @@ def test_stem_pre():
         "panahi": "tahi",
         "pananamit": "damit",
         "paninigarilyo": "sigarilyo",
-        "pananahi": "tahi"
+        "pananahi": "tahi",
     }
-    for s in stems:
-        assert stems[s] in stemmer.get_stem_candidates(s, valid_words + list(stems.values()))
+    for s, stem in stems.items():
+        assert stem in stemmer.get_stem_candidates(
+            s, valid_words + list(stems.values())
+        )
 
 
 def test_stem_inf():
@@ -34,8 +34,10 @@ def test_stem_inf():
         "chineck": "check",
         "splinit": "split",
     }
-    for s in stems:
-        assert stems[s] in stemmer.get_stem_candidates(s, valid_words + list(stems.values()))
+    for s, stem in stems.items():
+        assert stem in stemmer.get_stem_candidates(
+            s, valid_words + list(stems.values())
+        )
 
 
 def test_stem_suf():
@@ -48,8 +50,10 @@ def test_stem_suf():
         "buksan": "bukas",
         "tamnin": "tanim",
     }
-    for s in stems:
-        assert stems[s] in stemmer.get_stem_candidates(s, valid_words + list(stems.values()))
+    for s, stem in stems.items():
+        assert stem in stemmer.get_stem_candidates(
+            s, valid_words + list(stems.values())
+        )
 
 
 def test_stem_rep():
@@ -65,8 +69,10 @@ def test_stem_rep():
         "splsplit": "split",
         "splisplit": "split",
     }
-    for s in stems:
-        assert stems[s] in stemmer.get_stem_candidates(s, valid_words + list(stems.values()))
+    for s, stem in stems.items():
+        assert stem in stemmer.get_stem_candidates(
+            s, valid_words + list(stems.values())
+        )
 
 
 def test_stem_dup():
@@ -81,5 +87,7 @@ def test_stem_dup():
         "ibat-iba": "iba",
         "libut-libo": "libo",
     }
-    for s in stems:
-        assert stems[s] in stemmer.get_stem_candidates(s, valid_words + list(stems.values()))
+    for s, stem in stems.items():
+        assert stem in stemmer.get_stem_candidates(
+            s, valid_words + list(stems.values())
+        )
