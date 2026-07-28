@@ -7,15 +7,20 @@ name = "tglstemmer"
 version = "0.1.0"
 description = "A library for Tagalog word stemming."
 readme = "README.md"
-license = {file = "LICENSE"}
+license = "MIT"
 authors = [
   {name = "Andrian Lloyd Maagma", email = "maagmaandrian@gmail.com"}
 ]
-keywords = ["stemmer", "tagalog", "affix removal"]
+keywords = ["Stemming", "Stemmer", "Affix Removal", "Tagalog", "Filipino"]
 classifiers = [
   "Development Status :: 3 - Alpha",
-  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Developers",
+  "Topic :: Text Processing :: Linguistic",
+  "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Operating System :: OS Independent",
 ]
 requires-python = ">=3.10"
@@ -38,8 +43,9 @@ dev = [
 ]
 
 [project.urls]
-homepage = "https://github.com/andrianllmm/tglstemmer"
-issues = "https://github.com/andrianllmm/tglstemmer/issues"
+homepage = "https://github.com/andrianllmm/tagalog-stemmer"
+repository = "https://github.com/andrianllmm/tagalog-stemmer"
+issues = "https://github.com/andrianllmm/tagalog-stemmer/issues"
 
 [tool.setuptools]
 package-data = {"tglstemmer" = ["resources/*.txt", "resources/affixes/*.txt"]}
