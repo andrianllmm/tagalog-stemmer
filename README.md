@@ -15,7 +15,7 @@ root is then chosen based on how much was changed during the process.
 ## Installation
 
 ```sh
-pip install git+https://github.com/andrianllmm/tagalog-stemmer.git@main
+pip install tglstemmer
 ```
 
 ## Usage
